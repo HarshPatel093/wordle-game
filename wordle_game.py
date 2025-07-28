@@ -55,8 +55,8 @@ def play_wordle():
     word_list = load_words()
     answer = random.choice(word_list)
 
-    print("\n🎮 Welcome to Wordle Clone!")
-    print("🔤 Guess the 5-letter word in 6 tries.")
+    print("\n Welcome to Wordle Clone!")
+    print(" Guess the 5-letter word in 6 tries.")
     print()
 
     correct_list = []
@@ -66,16 +66,16 @@ def play_wordle():
         guess = input(f"Attempt {attempt}/6: ").strip().lower()
 
         while not is_valid_guess(guess, word_list):
-            print("❌ Invalid guess. Make sure it's a real 5-letter word from the list.")
+            print("Invalid guess. Make sure it's a real 5-letter word from the list.")
             guess = input(f"Attempt {attempt}/6: ").strip().lower()
 
         display_result(guess, answer, correct_list, used_list)
 
         if guess == answer:
-            print(f"\n🎉 Solved in {attempt} tries! Well done!")
+            print(f"\nSolved in {attempt} tries! Well done!")
             break
     else:
-        print(f"\n🔚 Out of attempts! The correct word was: {answer}")
+        print(f"\nOut of attempts! The correct word was: {answer}")
 
     input("Press Enter to exit...")
 
