@@ -1,8 +1,18 @@
 import random
+import os
 
 def load_words(filename="words.txt"):
-    with open(filename, "r") as f:
-        return [word.strip().lower() for word in f.readlines() if len(word.strip()) == 5]
+    filepath = os.path.join(os.path.dirname(__file__), filename)
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            words = [word.strip().lower() for word in lines if len(word.strip()) == 5]
+            if not words:
+                raise ValueError("The word list is empty or missing 5-letter words.")
+            return words
+    except FileNotFoundError:
+        print(f"⚠️ File '{filename}' not found at path: {filepath}")
+        return []
 
 def is_valid_guess(word, word_list):
     return len(word) == 5 and word in word_list
@@ -45,8 +55,8 @@ def play_wordle():
     word_list = load_words()
     answer = random.choice(word_list)
 
-    print("\nWelcome to Wordle Clone!")
-    print("Guess the 5-letter word in 6 tries.")
+    print("\n🎮 Welcome to Wordle Clone!")
+    print("🔤 Guess the 5-letter word in 6 tries.")
     print()
 
     correct_list = []
@@ -56,16 +66,18 @@ def play_wordle():
         guess = input(f"Attempt {attempt}/6: ").strip().lower()
 
         while not is_valid_guess(guess, word_list):
-            print("Invalid guess. Make sure it's a 5-letter word from the list.")
+            print("❌ Invalid guess. Make sure it's a real 5-letter word from the list.")
             guess = input(f"Attempt {attempt}/6: ").strip().lower()
 
         display_result(guess, answer, correct_list, used_list)
 
         if guess == answer:
             print(f"\n🎉 Solved in {attempt} tries! Well done!")
-            return
+            break
+    else:
+        print(f"\n🔚 Out of attempts! The correct word was: {answer}")
 
-    print(f"\nOut of attempts! The correct word was: {answer}")
+    input("Press Enter to exit...")
 
 if __name__ == "__main__":
     play_wordle()
